@@ -72,16 +72,17 @@ st.markdown("""
         button[aria-label="Toggle sidebar"]:hover {
             background-color: transparent !important;
         }
-    </style>
-    <style>
-        /* Oculta el botón de colapsar/expandir el sidebar */
+            
         button[aria-label="Collapse sidebar"] {
             visibility: visible !important;
-            color: white !important; /* si quieres que sea visible */
+            color: white !important;
+            opacity: 1 !important;
         }
-        /* Si quieres que el botón no se oculte nunca */
-        /* Quita este bloque para que el botón desaparezca completamente */
+        button[aria-label="Collapse sidebar"]:hover {
+            color: white !important;
+        }
     </style>
+            
 """, unsafe_allow_html=True)
 
 # Estado de navegación
