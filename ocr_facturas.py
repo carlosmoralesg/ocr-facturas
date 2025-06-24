@@ -55,26 +55,7 @@ st.markdown("""
             background-color: #d4edda !important;
             color: #000000 !important;
         }
-        /* Botón toggle sidebar: ícono siempre blanco */
-        button[aria-label="Toggle sidebar"] svg {
-            stroke: white !important;
-            fill: white !important;
-        }
-        button[aria-label="Toggle sidebar"]:hover svg {
-            stroke: white !important;
-            fill: white !important;
-        }
-        button[aria-label="Toggle sidebar"] {
-            background-color: transparent !important;
-            border: none !important;
-            outline: none !important;
-        }
-        button[aria-label="Toggle sidebar"]:hover {
-            background-color: transparent !important;
-        }
-            
     </style>
-            
 """, unsafe_allow_html=True)
 
 # Estado de navegación
@@ -127,7 +108,7 @@ if st.session_state.page == "procesar":
     st.markdown("<h1 style='text-align: center;'>OCR de Facturas Electrónicas</h1>", unsafe_allow_html=True)
     st.markdown("<div class='separador'></div>", unsafe_allow_html=True)
 
-    st.subheader("Subida de archivos PDF")
+    st.subheader("📤 Subida de archivos PDF")
     uploaded_files = st.file_uploader(
         "Seleccione una o varias facturas electrónicas en PDF",
         type="pdf",
@@ -168,7 +149,7 @@ if st.session_state.page == "procesar":
         st.session_state.df_actual = df
 
         st.markdown("<div class='separador'></div>", unsafe_allow_html=True)
-        st.subheader("Resultados extraídos")
+        st.subheader("📋 Resultados extraídos")
         st.dataframe(df, use_container_width=True)
 
         output = io.BytesIO()
@@ -209,11 +190,22 @@ elif st.session_state.page == "historico":
                     key="historico_editor"
                 )
 
+                # Botón para descargar Excel en histórico
+                output = io.BytesIO()
+                with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                    selected_rows_df.to_excel(writer, index=False, sheet_name='Facturas')
+                st.download_button(
+                    label="📊 Descargar Excel",
+                    data=output.getvalue(),
+                    file_name="historico_facturas.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+
                 if st.button("💾 Guardar cambios"):
                     df_hist = selected_rows_df.dropna(how="all")
                     df_hist.to_excel(historico_path, index=False, engine='openpyxl')
                     st.session_state["guardado_exitoso"] = True
-                    st.rerun()
+                    st.experimental_rerun()
 
                 if st.session_state.get("guardado_exitoso"):
                     st.success("Cambios guardados correctamente.")
@@ -222,7 +214,7 @@ elif st.session_state.page == "historico":
                 if not st.session_state.confirmar_borrado:
                     if st.button("🗑️ Borrar todo el histórico"):
                         st.session_state.confirmar_borrado = True
-                        st.rerun()
+                        st.experimental_rerun()
                 else:
                     st.markdown("<p style='color: black;'>¿Estás seguro de que deseas borrar todo el histórico?</p>", unsafe_allow_html=True)
                     col1, col2 = st.columns(2)
@@ -231,11 +223,11 @@ elif st.session_state.page == "historico":
                             os.remove(historico_path)
                             st.session_state.confirmar_borrado = False
                             st.success("🗑️ Histórico eliminado completamente.")
-                            st.rerun()
+                            st.experimental_rerun()
                     with col2:
                         if st.button("❌ Cancelar"):
                             st.session_state.confirmar_borrado = False
-                            st.rerun()
+                            st.experimental_rerun()
             else:
                 st.markdown("<p style='color: black;'>El archivo histórico está vacío. Procese facturas para comenzar.</p>", unsafe_allow_html=True)
         except Exception as e:
