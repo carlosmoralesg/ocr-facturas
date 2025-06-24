@@ -152,16 +152,6 @@ if st.session_state.page == "procesar":
         st.subheader("📋 Resultados extraídos")
         st.dataframe(df, use_container_width=True)
 
-        output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-            df.to_excel(writer, index=False, sheet_name='Facturas')
-        st.download_button(
-            label="📊 Descargar Excel",
-            data=output.getvalue(),
-            file_name="facturas_extraidas.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-
         if st.button("💾 Guardar en histórico"):
             historico_path = "historico_facturas.xlsx"
             if os.path.exists(historico_path):
