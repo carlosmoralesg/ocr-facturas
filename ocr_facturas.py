@@ -108,7 +108,7 @@ if st.session_state.page == "procesar":
     st.markdown("<h1 style='text-align: center;'>OCR de Facturas Electrónicas</h1>", unsafe_allow_html=True)
     st.markdown("<div class='separador'></div>", unsafe_allow_html=True)
 
-    st.subheader("📤 Subida de archivos PDF")
+    st.subheader("Subida de archivos PDF")
     uploaded_files = st.file_uploader(
         "Seleccione una o varias facturas electrónicas en PDF",
         type="pdf",
@@ -149,7 +149,7 @@ if st.session_state.page == "procesar":
         st.session_state.df_actual = df
 
         st.markdown("<div class='separador'></div>", unsafe_allow_html=True)
-        st.subheader("📋 Resultados extraídos")
+        st.subheader("Resultados extraídos")
         st.dataframe(df, use_container_width=True)
 
         if st.button("💾 Guardar en histórico"):
