@@ -195,7 +195,7 @@ elif st.session_state.page == "historico":
                     df_hist = selected_rows_df.dropna(how="all")
                     df_hist.to_excel(historico_path, index=False, engine='openpyxl')
                     st.session_state["guardado_exitoso"] = True
-                    st.experimental_rerun()
+                    st.rerun()
 
                 if st.session_state.get("guardado_exitoso"):
                     st.success("Cambios guardados correctamente.")
@@ -204,7 +204,7 @@ elif st.session_state.page == "historico":
                 if not st.session_state.confirmar_borrado:
                     if st.button("🗑️ Borrar todo el histórico"):
                         st.session_state.confirmar_borrado = True
-                        st.experimental_rerun()
+                        st.rerun()
                 else:
                     st.markdown("<p style='color: black;'>¿Estás seguro de que deseas borrar todo el histórico?</p>", unsafe_allow_html=True)
                     col1, col2 = st.columns(2)
@@ -213,11 +213,11 @@ elif st.session_state.page == "historico":
                             os.remove(historico_path)
                             st.session_state.confirmar_borrado = False
                             st.success("🗑️ Histórico eliminado completamente.")
-                            st.experimental_rerun()
+                            st.rerun()
                     with col2:
                         if st.button("❌ Cancelar"):
                             st.session_state.confirmar_borrado = False
-                            st.experimental_rerun()
+                            st.rerun()
             else:
                 st.markdown("<p style='color: black;'>El archivo histórico está vacío. Procese facturas para comenzar.</p>", unsafe_allow_html=True)
         except Exception as e:
