@@ -73,6 +73,15 @@ st.markdown("""
             background-color: transparent !important;
         }
     </style>
+    <style>
+        /* Oculta el botón de colapsar/expandir el sidebar */
+        button[aria-label="Collapse sidebar"] {
+            visibility: visible !important;
+            color: white !important; /* si quieres que sea visible */
+        }
+        /* Si quieres que el botón no se oculte nunca */
+        /* Quita este bloque para que el botón desaparezca completamente */
+    </style>
 """, unsafe_allow_html=True)
 
 # Estado de navegación
